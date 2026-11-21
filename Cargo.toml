@@ -1,0 +1,12 @@
+[package]
+name = "f_md"
+version = "0.1.0"
+edition = "2024"
+authors = ["happyboy <superhappyboy1995@gmail.com>"]
+description = "A Rust Markdown document parsing engine, with f_md at its core, providing complete document structure decomposition and read/write capabilities."
+keywords = ["markdown", "document"]
+license = "Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/0xhappyboy/f_md"
+
+[dependencies]
