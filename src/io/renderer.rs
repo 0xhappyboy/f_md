@@ -1,13 +1,10 @@
 //! Document rendering logic.
-
 use crate::core::block::*;
 use crate::core::document::FDocument;
 use crate::core::inline::FInline;
-
 /// Serializes a complete document to Markdown text.
 pub(crate) fn render_document(doc: &FDocument) -> crate::FMdResult<String> {
     let mut out = String::new();
-
     // Front matter.
     if let Some(raw) = &doc.metadata.raw {
         out.push_str(raw);
@@ -19,15 +16,12 @@ pub(crate) fn render_document(doc: &FDocument) -> crate::FMdResult<String> {
         }
         out.push_str("---\n\n");
     }
-
     for block in &doc.blocks {
         render_block(block, &mut out);
         out.push('\n');
     }
-
     Ok(out)
 }
-
 /// Renders a single block.
 fn render_block(block: &FBlock, out: &mut String) {
     match block {
@@ -106,7 +100,6 @@ fn render_block(block: &FBlock, out: &mut String) {
         }
     }
 }
-
 /// Renders a nested list item with indentation.
 fn render_nested_item(item: &FListItem, ordered: bool, depth: usize, out: &mut String) {
     let indent = "  ".repeat(depth);
@@ -123,7 +116,6 @@ fn render_nested_item(item: &FListItem, ordered: bool, depth: usize, out: &mut S
         render_nested_item(child, ordered, depth + 1, out);
     }
 }
-
 /// Renders a table row.
 fn render_table_row(row: &FTableRow, out: &mut String) {
     out.push('|');
@@ -134,7 +126,6 @@ fn render_table_row(row: &FTableRow, out: &mut String) {
     }
     out.push('\n');
 }
-
 /// Renders inline elements.
 fn render_inlines(inlines: &[FInline], out: &mut String) {
     for inline in inlines {

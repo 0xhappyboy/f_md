@@ -20,7 +20,6 @@ pub enum FBlock {
     /// Raw HTML block.
     Html(FHtmlBlock),
 }
-
 /// Heading with level 1-6.
 #[derive(Debug, Clone, Default)]
 pub struct FHeading {
@@ -31,7 +30,6 @@ pub struct FHeading {
     /// Raw source line.
     pub raw: Option<String>,
 }
-
 /// Paragraph.
 #[derive(Debug, Clone, Default)]
 pub struct FParagraph {
@@ -40,7 +38,6 @@ pub struct FParagraph {
     /// Raw source lines.
     pub raw: Option<String>,
 }
-
 /// Fenced code block.
 #[derive(Debug, Clone, Default)]
 pub struct FCodeBlock {
@@ -51,7 +48,6 @@ pub struct FCodeBlock {
     /// Raw source lines.
     pub raw: Option<String>,
 }
-
 /// Blockquote containing nested blocks.
 #[derive(Debug, Clone, Default)]
 pub struct FQuote {
@@ -60,7 +56,6 @@ pub struct FQuote {
     /// Raw source lines.
     pub raw: Option<String>,
 }
-
 /// A single list item.
 #[derive(Debug, Clone, Default)]
 pub struct FListItem {
@@ -73,7 +68,6 @@ pub struct FListItem {
     /// Raw source line.
     pub raw: Option<String>,
 }
-
 /// List (ordered or unordered).
 #[derive(Debug, Clone, Default)]
 pub struct FList {
@@ -86,7 +80,6 @@ pub struct FList {
     /// Raw source lines.
     pub raw: Option<String>,
 }
-
 /// Table cell.
 #[derive(Debug, Clone, Default)]
 pub struct FTableCell {
@@ -95,14 +88,12 @@ pub struct FTableCell {
     /// Alignment hint (left, center, right).
     pub align: Option<String>,
 }
-
 /// Table row.
 #[derive(Debug, Clone, Default)]
 pub struct FTableRow {
     /// Cells in the row.
     pub cells: Vec<FTableCell>,
 }
-
 /// GFM table.
 #[derive(Debug, Clone, Default)]
 pub struct FTable {
@@ -115,7 +106,6 @@ pub struct FTable {
     /// Raw source lines.
     pub raw: Option<String>,
 }
-
 /// Raw HTML block.
 #[derive(Debug, Clone, Default)]
 pub struct FHtmlBlock {

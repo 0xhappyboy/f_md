@@ -2,10 +2,8 @@
 mod tests {
     use f_md::*;
     use std::io::Read;
-
-    const windows_output_url: &str = "/Users/max/Downloads/tests";
+    const windows_output_url: &str = "C:\\Users\\admin\\Downloads";
     const macos_output_url: &str = "/Users/max/Downloads/tests";
-
     /// Output path for demo Markdown file.
     fn demo_path() -> std::path::PathBuf {
         #[cfg(target_os = "windows")]
@@ -21,7 +19,6 @@ mod tests {
             std::env::temp_dir().join("demo.md")
         }
     }
-
     /// Builds a text run with the given text.
     fn make_text(text: &str) -> FText {
         FText {
@@ -29,7 +26,6 @@ mod tests {
             ..Default::default()
         }
     }
-
     /// Builds a styled text run.
     fn make_styled_text(text: &str, bold: bool, italic: bool, strike: bool) -> FText {
         FText {
@@ -40,7 +36,6 @@ mod tests {
             ..Default::default()
         }
     }
-
     /// Builds a link.
     fn make_link(text: &str, url: &str) -> FLink {
         FLink {
@@ -51,7 +46,6 @@ mod tests {
             ..Default::default()
         }
     }
-
     /// Builds an image.
     fn make_image(alt: &str, url: &str) -> FLink {
         FLink {
@@ -62,7 +56,6 @@ mod tests {
             ..Default::default()
         }
     }
-
     /// Builds an inline code.
     fn make_code(text: &str) -> FCode {
         FCode {
@@ -70,7 +63,6 @@ mod tests {
             ..Default::default()
         }
     }
-
     /// Builds a heading block.
     fn make_heading(level: u8, text: &str) -> FBlock {
         FBlock::Heading(FHeading {
@@ -79,7 +71,6 @@ mod tests {
             ..Default::default()
         })
     }
-
     /// Builds a paragraph block from inline elements.
     fn make_paragraph(inlines: Vec<FInline>) -> FBlock {
         FBlock::Paragraph(FParagraph {
@@ -87,12 +78,10 @@ mod tests {
             ..Default::default()
         })
     }
-
     /// Builds a simple paragraph with plain text.
     fn make_simple_paragraph(text: &str) -> FBlock {
         make_paragraph(vec![FInline::Text(make_text(text))])
     }
-
     /// Builds a code block.
     fn make_code_block(language: &str, code: &str) -> FBlock {
         FBlock::CodeBlock(FCodeBlock {
@@ -101,7 +90,6 @@ mod tests {
             ..Default::default()
         })
     }
-
     /// Builds a blockquote.
     fn make_quote(blocks: Vec<FBlock>) -> FBlock {
         FBlock::Quote(FQuote {
@@ -109,7 +97,6 @@ mod tests {
             ..Default::default()
         })
     }
-
     /// Builds a list item.
     fn make_list_item(text: &str, children: Vec<FListItem>) -> FListItem {
         FListItem {
@@ -118,7 +105,6 @@ mod tests {
             ..Default::default()
         }
     }
-
     /// Builds a task list item.
     fn make_task_item(text: &str, done: bool) -> FListItem {
         FListItem {
@@ -127,7 +113,6 @@ mod tests {
             ..Default::default()
         }
     }
-
     /// Builds an unordered list.
     fn make_unordered_list(items: Vec<FListItem>) -> FBlock {
         FBlock::List(FList {
@@ -137,7 +122,6 @@ mod tests {
             ..Default::default()
         })
     }
-
     /// Builds an ordered list.
     fn make_ordered_list(start: u32, items: Vec<FListItem>) -> FBlock {
         FBlock::List(FList {
@@ -147,7 +131,6 @@ mod tests {
             ..Default::default()
         })
     }
-
     /// Builds a table cell.
     fn make_cell(text: &str) -> FTableCell {
         FTableCell {
@@ -155,7 +138,6 @@ mod tests {
             ..Default::default()
         }
     }
-
     /// Builds a table.
     fn make_table(header: Vec<&str>, rows: Vec<Vec<&str>>, aligns: Vec<Option<String>>) -> FBlock {
         FBlock::Table(FTable {
@@ -172,7 +154,6 @@ mod tests {
             ..Default::default()
         })
     }
-
     /// Creates the front matter metadata for the document.
     fn make_metadata() -> FMetadata {
         let mut meta = FMetadata::default();
@@ -182,20 +163,17 @@ mod tests {
         meta.set("tags", "markdown, rust, demo");
         meta
     }
-
     /// Writes a comprehensive Markdown demo covering all features.
     #[test]
     fn write_demo_md() {
         let mut doc = FDocument::new_empty();
         doc.metadata = make_metadata();
-
         // Section 1: Headings.
         doc.blocks.push(make_heading(1, "f_md Demo Document"));
         doc.blocks.push(make_simple_paragraph(
             "This document demonstrates all features of the f_md parsing engine.",
         ));
         doc.blocks.push(FBlock::ThematicBreak);
-
         // Section 2: Text formatting.
         doc.blocks.push(make_heading(2, "Text Formatting"));
         doc.blocks.push(make_paragraph(vec![
@@ -217,14 +195,12 @@ mod tests {
                 "https://www.rust-lang.org/static/images/rust-logo-blk.svg",
             )),
         ]));
-
         // Section 3: Code block.
         doc.blocks.push(make_heading(2, "Code Block"));
         doc.blocks.push(make_code_block(
             "rust",
             "fn main() {\n    println!(\"Hello, f_md!\");\n    let doc = FDocument::with_str(\"# Hi\").unwrap();\n    println!(\"{}\", doc.plain_text());\n}\n",
         ));
-
         // Section 4: Lists.
         doc.blocks.push(make_heading(2, "Lists"));
         doc.blocks.push(make_unordered_list(vec![
@@ -250,14 +226,12 @@ mod tests {
             make_task_item("Completed task", true),
             make_task_item("Pending task", false),
         ]));
-
         // Section 5: Blockquote.
         doc.blocks.push(make_heading(2, "Blockquote"));
         doc.blocks.push(make_quote(vec![
             make_simple_paragraph("The quick brown fox jumps over the lazy dog."),
             make_simple_paragraph("— A famous pangram"),
         ]));
-
         // Section 6: Table.
         doc.blocks.push(make_heading(2, "Table"));
         doc.blocks
@@ -277,36 +251,30 @@ mod tests {
                 Some("right".to_string()),
             ],
         ));
-
         // Section 7: HTML.
         doc.blocks.push(make_heading(2, "Raw HTML"));
         doc.blocks.push(FBlock::Html(FHtmlBlock {
             html: "<div class=\"note\">\n  <p>This is a raw HTML block.</p>\n</div>\n".to_string(),
             ..Default::default()
         }));
-
         // Serialize and write.
         let output = doc.to_string().expect("failed to serialize document");
         println!("[writer] serialized document: {} bytes", output.len());
         std::fs::write(demo_path(), &output).expect("failed to write demo.md");
         println!("demo.md written to {}", demo_path().display());
     }
-
     /// Reads the demo Markdown and prints its contents.
     #[test]
     fn read_demo_md() {
         let doc = FDocument::with_path(demo_path()).expect("failed to read demo.md");
-
         println!("=== Document Info ===");
         println!("Block Count: {}", doc.block_count());
         println!();
-
         println!("=== Metadata ===");
         for (key, value) in &doc.metadata.values {
             println!("  {}: {}", key, value);
         }
         println!();
-
         println!("=== Blocks ===");
         for (idx, block) in doc.blocks.iter().enumerate() {
             match block {
@@ -447,7 +415,6 @@ mod tests {
             }
         }
         println!();
-
         println!("=== Plain Text ===");
         println!("{}", doc.plain_text());
     }

@@ -6,7 +6,6 @@ pub(crate) struct Line<'a> {
     /// Raw text without trailing newline.
     pub text: &'a str,
 }
-
 /// Splits source text into lines, preserving line numbers.
 pub(crate) fn split_lines(src: &str) -> Vec<Line<'_>> {
     src.lines()
@@ -14,17 +13,14 @@ pub(crate) fn split_lines(src: &str) -> Vec<Line<'_>> {
         .map(|(i, text)| Line { number: i, text })
         .collect()
 }
-
 /// Returns the number of leading spaces.
 pub(crate) fn leading_spaces(s: &str) -> usize {
     s.chars().take_while(|c| *c == ' ').count()
 }
-
 /// Checks if a line is blank (empty or only whitespace).
 pub(crate) fn is_blank(s: &str) -> bool {
     s.trim().is_empty()
 }
-
 /// Extracts ATX heading level and content.
 pub(crate) fn parse_atx_heading(s: &str) -> Option<(u8, String)> {
     let trimmed = s.trim_start();
@@ -44,7 +40,6 @@ pub(crate) fn parse_atx_heading(s: &str) -> Option<(u8, String)> {
     }
     Some((level as u8, content))
 }
-
 /// Checks if a line is a thematic break (`---`, `***`, `___` with optional spaces).
 pub(crate) fn is_thematic_break(s: &str) -> bool {
     let t = s.trim();
@@ -58,7 +53,6 @@ pub(crate) fn is_thematic_break(s: &str) -> bool {
     let first = chars[0];
     matches!(first, '-' | '*' | '_') && chars.iter().all(|c| *c == first)
 }
-
 /// Extracts fence info for ``` or ~~~ fenced code blocks.
 pub(crate) fn parse_code_fence(s: &str) -> Option<(char, usize, String)> {
     let t = s.trim_start();
@@ -73,14 +67,12 @@ pub(crate) fn parse_code_fence(s: &str) -> Option<(char, usize, String)> {
     let info = t[count..].trim().to_string();
     Some((ch, count, info))
 }
-
 /// Checks if a line closes a fence opened with (ch, count).
 pub(crate) fn is_fence_close(s: &str, ch: char, count: usize) -> bool {
     let t = s.trim();
     let close_count = t.chars().take_while(|c| *c == ch).count();
     close_count >= count && t[close_count..].trim().is_empty()
 }
-
 /// Extracts blockquote content (strips leading "> " or ">").
 pub(crate) fn parse_blockquote(s: &str) -> Option<String> {
     let t = s.trim_start();
@@ -94,7 +86,6 @@ pub(crate) fn parse_blockquote(s: &str) -> Option<String> {
         Some(rest.to_string())
     }
 }
-
 /// Information extracted from a list item marker.
 pub(crate) struct ListMarker {
     /// Ordered (1.) or unordered (-, *, +).
@@ -108,14 +99,12 @@ pub(crate) struct ListMarker {
     /// Task list checkbox state: Some(true) = [x], Some(false) = [ ].
     pub task: Option<bool>,
 }
-
 pub(crate) fn parse_list_marker(s: &str) -> Option<ListMarker> {
     let indent = leading_spaces(s);
     if indent >= 4 {
         return None; // 4+ spaces = indented code block territory.
     }
     let t = &s[indent..];
-
     // Unordered: - * +
     if let Some(first) = t.chars().next() {
         if first == '-' || first == '*' || first == '+' {
@@ -143,7 +132,6 @@ pub(crate) fn parse_list_marker(s: &str) -> Option<ListMarker> {
             }
         }
     }
-
     // Ordered: N. or N)
     let digits: String = t.chars().take_while(|c| c.is_ascii_digit()).collect();
     if !digits.is_empty() {
@@ -167,10 +155,8 @@ pub(crate) fn parse_list_marker(s: &str) -> Option<ListMarker> {
             });
         }
     }
-
     None
 }
-
 fn parse_task_marker(s: &str) -> Option<bool> {
     if s.len() >= 3 && s.starts_with("[ ]") {
         Some(false)
@@ -180,13 +166,11 @@ fn parse_task_marker(s: &str) -> Option<bool> {
         None
     }
 }
-
 pub(crate) fn split_table_row(s: &str) -> Vec<String> {
     let mut cells = Vec::new();
     let mut current = String::new();
     let mut chars = s.chars().peekable();
     let mut in_code = false;
-
     while let Some(c) = chars.next() {
         match c {
             '\\' => {
@@ -217,7 +201,6 @@ pub(crate) fn split_table_row(s: &str) -> Vec<String> {
     }
     cells
 }
-
 pub(crate) fn is_table_delimiter(s: &str) -> bool {
     let cells = split_table_row(s);
     !cells.is_empty()
@@ -226,7 +209,6 @@ pub(crate) fn is_table_delimiter(s: &str) -> bool {
             !t.is_empty() && t.chars().all(|c| matches!(c, '-' | ':' | ' ')) && t.contains('-')
         })
 }
-
 pub(crate) fn parse_alignment(cell: &str) -> Option<String> {
     let t = cell.trim();
     if !t.contains('-') {

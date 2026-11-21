@@ -3,7 +3,6 @@ mod core;
 mod error;
 mod io;
 mod lexer;
-
 pub use core::block::{
     FBlock, FCodeBlock, FHeading, FHtmlBlock, FList, FListItem, FParagraph, FQuote, FTable,
     FTableCell, FTableRow,

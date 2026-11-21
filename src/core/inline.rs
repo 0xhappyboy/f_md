@@ -10,7 +10,6 @@ pub enum FInline {
     /// Hard line break (two trailing spaces or backslash).
     HardBreak,
 }
-
 /// A run of text with uniform formatting.
 #[derive(Debug, Clone, Default)]
 pub struct FText {
@@ -25,7 +24,6 @@ pub struct FText {
     /// Raw source slice (preserved for round-trip fidelity).
     pub raw: Option<String>,
 }
-
 /// A link or image.
 #[derive(Debug, Clone, Default)]
 pub struct FLink {
@@ -40,7 +38,6 @@ pub struct FLink {
     /// Raw source slice.
     pub raw: Option<String>,
 }
-
 /// An inline code span.
 #[derive(Debug, Clone, Default)]
 pub struct FCode {
